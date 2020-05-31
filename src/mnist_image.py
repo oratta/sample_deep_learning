@@ -12,6 +12,9 @@ def img_show(img, isReshape=True):
 
 def get_data(count=0):
     (x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=False)
+    if count != 0:
+        x_test = x_test[0:count];
+        t_test = t_test[0:count];
     return x_test, t_test
 
 def init_network(file_name):
