@@ -1,5 +1,5 @@
 import numpy as np
-from src.activation import sigmoid, identity_function
+from src.activation import sigmoid, identity_function, softmax
 
 def init_network():
     network = {}
@@ -28,7 +28,7 @@ def init_network():
 
     return network
 
-def forward(network, x):
+def forward(network, x, finalize_method="indentity_function"):
     W1, W2, W3 = network['W1'], network['W2'], network['W3']
     b1, b2, b3 = network['b1'], network['b2'], network['b3']
 
@@ -37,6 +37,9 @@ def forward(network, x):
     a2 = np.dot(z1, W2) + b2
     z2 = sigmoid(a2)
     a3 = np.dot(z2, W3) + b3
-    y = identity_function(a3)
+    y = eval(finalize_method)(a3)
 
     return y
+
+def predict(network, x):
+    return forward(network, x, "softmax")
