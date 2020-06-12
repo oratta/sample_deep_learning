@@ -9,13 +9,14 @@ def cross_entropy_error(y, t):
         y = y.reshape(1, y.size)
 
     batch_size = y.shape[0]
+
     return -np.sum(t * np.log(y+1e-7)) / batch_size
 
 def numerical_diff(f, x):
     h = 1e-4 #0.0001
     return (f(x+h) - f(x-h)) / (2*h)
 
-def numerical_gradient(f, x):
+def _numerical_gradient_no_batch(f, x):
     h = 1e-4 #0.0001
     grad = np.zeros_like(x)
 
@@ -30,6 +31,16 @@ def numerical_gradient(f, x):
 
         grad[idx] = (fxh1 - fxh2) / (2*h)
         x[idx] = tmp_val
+
+    return grad
+
+def numerical_gradient(f, X):
+    if X.ndim == 1:
+        grad = _numerical_gradient_no_batch(f, X)
+    else:
+        grad = np.zeros_like(X)
+        for idx, x in enumerate(X):
+            grad[idx] = _numerical_gradient_no_batch(f, x)
 
     return grad
 
