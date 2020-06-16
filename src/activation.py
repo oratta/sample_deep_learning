@@ -3,6 +3,9 @@ import numpy as np
 def step_function(x):
     return np.array(x > 0, dtype=np.int)
 
+def sigmoid_grad(x):
+    return (1.0 - sigmoid(x)) * sigmoid(x)
+
 @np.vectorize
 def sigmoid(x):
     sigmoid_range = 34.538776394910684
